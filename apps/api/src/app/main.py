@@ -4,6 +4,7 @@ from fastapi.responses import JSONResponse
 
 from app.core.exceptions import AppException
 from app.core.response import APIResponse
+from app.routes.car_recommendation_routes import router as car_recommendation_router
 
 app = FastAPI(title="Smart Car Advisor API")
 
@@ -30,6 +31,4 @@ async def validation_exception_handler(
     return JSONResponse(status_code=422, content=response.model_dump())
 
 
-# Feature routers are mounted here as they're built, e.g.:
-# from app.routes.car_recommendation_routes import router as car_recommendation_router
-# app.include_router(car_recommendation_router, prefix="/api/v1")
+app.include_router(car_recommendation_router, prefix="/api/v1")

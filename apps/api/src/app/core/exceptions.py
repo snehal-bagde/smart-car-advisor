@@ -24,3 +24,8 @@ class ValidationError(AppException):
 class ConflictError(AppException):
     status_code = 409
     error_code = "conflict"
+
+
+class NoMatchingCarsError(NotFoundError):
+    error_code = "no_matching_cars"
+    message = "No cars match the given criteria, even after relaxing optional filters."
