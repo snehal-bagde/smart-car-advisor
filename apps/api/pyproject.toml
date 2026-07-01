@@ -1,0 +1,43 @@
+[project]
+name = "smart-car-advisor-api"
+version = "0.1.0"
+description = "FastAPI backend for the Smart Car Advisor recommendation app"
+requires-python = ">=3.12"
+dependencies = [
+    "alembic>=1.18.5",
+    "fastapi>=0.139.0",
+    "psycopg[binary]>=3.3.4",
+    "pydantic-settings>=2.14.2",
+    "sqlalchemy>=2.0",
+    "uvicorn[standard]>=0.49.0",
+]
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "pytest>=9.1.1",
+    "ruff>=0.15.20",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/app"]
+
+[tool.ruff]
+line-length = 100
+src = ["src"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+# B008: Depends(...) as a default argument is FastAPI's canonical DI pattern, not the
+# mutable-default-argument hazard this rule targets -- every layer's get_<thing> provider
+# uses it (see CLAUDE.md's DI chain), so it's ignored project-wide rather than per-line.
+ignore = ["B008"]
+
+[tool.ruff.lint.per-file-ignores]
+"alembic/versions/*.py" = ["E501", "UP006", "UP007", "UP035", "I001"]
+"src/app/seed_data/makers_and_models.py" = ["E501"]
+"src/app/seed/generators.py" = ["E501"]
