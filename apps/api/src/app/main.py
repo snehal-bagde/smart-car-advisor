@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app.core.exceptions import AppException
@@ -7,6 +8,15 @@ from app.core.response import APIResponse
 from app.routes.car_recommendation_routes import router as car_recommendation_router
 
 app = FastAPI(title="Smart Car Advisor API")
+
+# Dev-only: allows the Next.js frontend (localhost:3000) to call this API from the
+# browser. Revisit with an env-driven allow-list before any real deployment.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.exception_handler(AppException)
